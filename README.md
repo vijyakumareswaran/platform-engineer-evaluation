@@ -17,6 +17,9 @@ platform-engineer-evaluation/
 │ └── 4.2_crashloop_triage.sh # CrashLoopBackOff diagnostics
 └── README.md # This file
 
+![image](https://github.com/user-attachments/assets/5551a7a4-1ae9-4137-a9cf-eaeda9a85581)
+
+
 
 ## 🚀 Quick Start
 
