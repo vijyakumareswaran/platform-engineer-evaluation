@@ -23,8 +23,17 @@ platform-engineer-evaluation/
 
 ## 🚀 Quick Start
 
+#
+
 ### 1. Kubernetes Mastery
+### 1. Kubernetes Mastery
+
 ```bash
+
+### 1. Kubernetes Mastery
+
+```bash
+
 # Deploy GPU pod
 kubectl apply -f 1_kubernetes_mastery/1.1_gpu_pod.yaml
 
