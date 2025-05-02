@@ -1,0 +1,47 @@
+groups:
+- name: checkout-slo-alerts
+  rules:
+  # Latency SLO (p95 < 500ms for 99% of requests)
+  - alert: HighCheckoutLatency
+    expr: |
+      (
+        histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api", route="/checkout"}[5m])) by (le)
+        > 0.5  # 500ms
+      )
+      and
+      (
+        # Burn rate: 5% of error budget in 1h
+        sum(rate(http_request_duration_seconds_count{job="api", route="/checkout"}[1h]))
+        / 
+        sum(rate(http_request_duration_seconds_count{job="api", route="/checkout"}[24h]))
+        > 0.0005  # 0.05% of daily budget
+      )
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High latency for /checkout (p95 > 500ms)"
+      description: "Latency SLO violation with burn rate {{ $value }}."
+
+  # Error Rate SLO (< 0.1% errors)
+  - alert: HighCheckoutErrorRate
+    expr: |
+      (
+        rate(http_requests_total{job="api", route="/checkout", status=~"5.."}[1m])
+        /
+        rate(http_requests_total{job="api", route="/checkout"}[1m])
+        > 0.01  # 1% spike
+      )
+      and
+      (
+        rate(http_requests_total{job="api", route="/checkout", status=~"5.."}[30m])
+        /
+        rate(http_requests_total{job="api", route="/checkout"}[30m])
+        > 0.001  # 0.1% sustained
+      )
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High error rate for /checkout"
+      description: "Error rate {{ $value }} exceeds SLO (0.1%)."
