@@ -53,7 +53,10 @@ cp 3_airflow/3.1_etl_dag.py ${AIRFLOW_HOME}/dags/
 
 # Debugging guide doesn't require execution
 cat 3_airflow/3.2_debugging_guide.md
+
+
 4. Scripting
+
 bash
 # Validate Kubernetes manifests
 python 4_scripting/4.1_k8s_validator.py /path/to/manifests/
